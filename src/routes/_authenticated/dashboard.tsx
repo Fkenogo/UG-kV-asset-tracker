@@ -177,11 +177,11 @@ function ActionCard({
     );
   }
   return (
-    <Link
-      to={to}
+    <a
+      href={to}
       className="block rounded-xl border bg-card p-4 hover:border-accent hover:shadow-sm transition"
     >
       {content}
-    </Link>
+    </a>
   );
 }
