@@ -198,9 +198,13 @@ function SideLink({
   const active = pathname === item.to || pathname.startsWith(item.to + "/");
   const Icon = item.icon;
   return (
-    <Link
-      to={item.to}
-      onClick={onClick}
+    <a
+      href={item.to}
+      onClick={(e) => {
+        if (onClick) onClick();
+        // Let TanStack handle navigation via full-page request fallback for stubs.
+      }}
+      data-active={active}
       className={cn(
         "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors",
         active
@@ -210,6 +214,6 @@ function SideLink({
     >
       <Icon className="size-4" />
       <span>{item.label}</span>
-    </Link>
+    </a>
   );
 }
