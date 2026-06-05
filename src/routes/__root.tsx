@@ -77,14 +77,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "kVAssetTracker — UEDCL Transformer Management" },
+      { name: "description", content: "Transformer asset registry and field maintenance platform for Uganda Electricity Distribution Company Ltd." },
+      { name: "author", content: "UEDCL · AKTIVATE" },
+      { property: "og:title", content: "kVAssetTracker — UEDCL Transformer Management" },
+      { property: "og:description", content: "Register, inspect, and maintain UEDCL's transformer fleet across 11kV and 33kV networks." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
