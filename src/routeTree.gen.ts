@@ -14,6 +14,8 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedTransformersIndexRouteImport } from './routes/_authenticated/transformers/index'
+import { Route as AuthenticatedTransformersNewRouteImport } from './routes/_authenticated/transformers/new'
+import { Route as AuthenticatedTransformersIdRouteImport } from './routes/_authenticated/transformers/$id'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -40,17 +42,33 @@ const AuthenticatedTransformersIndexRoute =
     path: '/transformers/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedTransformersNewRoute =
+  AuthenticatedTransformersNewRouteImport.update({
+    id: '/transformers/new',
+    path: '/transformers/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedTransformersIdRoute =
+  AuthenticatedTransformersIdRouteImport.update({
+    id: '/transformers/$id',
+    path: '/transformers/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/transformers/$id': typeof AuthenticatedTransformersIdRoute
+  '/transformers/new': typeof AuthenticatedTransformersNewRoute
   '/transformers/': typeof AuthenticatedTransformersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/transformers/$id': typeof AuthenticatedTransformersIdRoute
+  '/transformers/new': typeof AuthenticatedTransformersNewRoute
   '/transformers': typeof AuthenticatedTransformersIndexRoute
 }
 export interface FileRoutesById {
@@ -59,19 +77,35 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/transformers/$id': typeof AuthenticatedTransformersIdRoute
+  '/_authenticated/transformers/new': typeof AuthenticatedTransformersNewRoute
   '/_authenticated/transformers/': typeof AuthenticatedTransformersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dashboard' | '/transformers/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/transformers/$id'
+    | '/transformers/new'
+    | '/transformers/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard' | '/transformers'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/transformers/$id'
+    | '/transformers/new'
+    | '/transformers'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/dashboard'
+    | '/_authenticated/transformers/$id'
+    | '/_authenticated/transformers/new'
     | '/_authenticated/transformers/'
   fileRoutesById: FileRoutesById
 }
@@ -118,16 +152,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTransformersIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/transformers/new': {
+      id: '/_authenticated/transformers/new'
+      path: '/transformers/new'
+      fullPath: '/transformers/new'
+      preLoaderRoute: typeof AuthenticatedTransformersNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/transformers/$id': {
+      id: '/_authenticated/transformers/$id'
+      path: '/transformers/$id'
+      fullPath: '/transformers/$id'
+      preLoaderRoute: typeof AuthenticatedTransformersIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedTransformersIdRoute: typeof AuthenticatedTransformersIdRoute
+  AuthenticatedTransformersNewRoute: typeof AuthenticatedTransformersNewRoute
   AuthenticatedTransformersIndexRoute: typeof AuthenticatedTransformersIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedTransformersIdRoute: AuthenticatedTransformersIdRoute,
+  AuthenticatedTransformersNewRoute: AuthenticatedTransformersNewRoute,
   AuthenticatedTransformersIndexRoute: AuthenticatedTransformersIndexRoute,
 }
 
@@ -142,13 +194,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
