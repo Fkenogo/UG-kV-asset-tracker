@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedQrScanRouteImport } from './routes/_authenticated/qr-scan'
 import { Route as AuthenticatedMapRouteImport } from './routes/_authenticated/map'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedTransformersIndexRouteImport } from './routes/_authenticated/transformers/index'
@@ -31,6 +32,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedQrScanRoute = AuthenticatedQrScanRouteImport.update({
+  id: '/qr-scan',
+  path: '/qr-scan',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMapRoute = AuthenticatedMapRouteImport.update({
   id: '/map',
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/map': typeof AuthenticatedMapRoute
+  '/qr-scan': typeof AuthenticatedQrScanRoute
   '/transformers/$id': typeof AuthenticatedTransformersIdRoute
   '/transformers/new': typeof AuthenticatedTransformersNewRoute
   '/transformers/': typeof AuthenticatedTransformersIndexRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/map': typeof AuthenticatedMapRoute
+  '/qr-scan': typeof AuthenticatedQrScanRoute
   '/transformers/$id': typeof AuthenticatedTransformersIdRoute
   '/transformers/new': typeof AuthenticatedTransformersNewRoute
   '/transformers': typeof AuthenticatedTransformersIndexRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/map': typeof AuthenticatedMapRoute
+  '/_authenticated/qr-scan': typeof AuthenticatedQrScanRoute
   '/_authenticated/transformers/$id': typeof AuthenticatedTransformersIdRoute
   '/_authenticated/transformers/new': typeof AuthenticatedTransformersNewRoute
   '/_authenticated/transformers/': typeof AuthenticatedTransformersIndexRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/map'
+    | '/qr-scan'
     | '/transformers/$id'
     | '/transformers/new'
     | '/transformers/'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/map'
+    | '/qr-scan'
     | '/transformers/$id'
     | '/transformers/new'
     | '/transformers'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/dashboard'
     | '/_authenticated/map'
+    | '/_authenticated/qr-scan'
     | '/_authenticated/transformers/$id'
     | '/_authenticated/transformers/new'
     | '/_authenticated/transformers/'
@@ -149,6 +161,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/qr-scan': {
+      id: '/_authenticated/qr-scan'
+      path: '/qr-scan'
+      fullPath: '/qr-scan'
+      preLoaderRoute: typeof AuthenticatedQrScanRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/map': {
       id: '/_authenticated/map'
@@ -191,6 +210,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedMapRoute: typeof AuthenticatedMapRoute
+  AuthenticatedQrScanRoute: typeof AuthenticatedQrScanRoute
   AuthenticatedTransformersIdRoute: typeof AuthenticatedTransformersIdRoute
   AuthenticatedTransformersNewRoute: typeof AuthenticatedTransformersNewRoute
   AuthenticatedTransformersIndexRoute: typeof AuthenticatedTransformersIndexRoute
@@ -199,6 +219,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedMapRoute: AuthenticatedMapRoute,
+  AuthenticatedQrScanRoute: AuthenticatedQrScanRoute,
   AuthenticatedTransformersIdRoute: AuthenticatedTransformersIdRoute,
   AuthenticatedTransformersNewRoute: AuthenticatedTransformersNewRoute,
   AuthenticatedTransformersIndexRoute: AuthenticatedTransformersIndexRoute,
@@ -215,3 +236,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
