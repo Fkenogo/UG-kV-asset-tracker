@@ -127,7 +127,12 @@ function MapView() {
       if (filters.territoryId !== "all") q = q.eq("territory_id", filters.territoryId);
       const { data, error } = await q;
       if (error) throw error;
-      return (data ?? []) as TransformerPin[];
+      // numeric columns can come back as strings — coerce for Leaflet.
+      return (data ?? []).map((r) => ({
+        ...r,
+        latitude: Number(r.latitude),
+        longitude: Number(r.longitude),
+      })) as TransformerPin[];
     },
   });
 
