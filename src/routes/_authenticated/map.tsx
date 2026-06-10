@@ -79,7 +79,7 @@ interface TransformerPin {
   asset_id: string;
   serial_number: string | null;
   site_name: string | null;
-  capacity_kva: number;
+  kva_rating: number;
   network_voltage_kv: number;
   operational_status: OperationalStatus;
   latitude: number;
@@ -118,7 +118,7 @@ function MapView() {
       let q = supabase
         .from("transformers")
         .select(
-          "id, asset_id, serial_number, site_name, capacity_kva, network_voltage_kv, operational_status, latitude, longitude, territory_id",
+          "id, asset_id, serial_number, site_name, kva_rating, network_voltage_kv, operational_status, latitude, longitude, territory_id",
         )
         .not("latitude", "is", null)
         .not("longitude", "is", null)
@@ -196,7 +196,7 @@ function MapView() {
                 </div>
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   <Badge variant="outline">
-                    {t.capacity_kva}kVA/{t.network_voltage_kv}kV
+                    {t.kva_rating}kVA/{t.network_voltage_kv}kV
                   </Badge>
                   <Badge
                     style={{
