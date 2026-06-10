@@ -30,7 +30,7 @@ export function TransformerQR({
   voltageKv,
 }: Props) {
   const { role, user } = useAuth();
-  const canEdit = canDo(role, "edit_asset");
+  const canEdit = canDo(role, "generate_qr");
   const qc = useQueryClient();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
