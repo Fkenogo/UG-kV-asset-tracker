@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { TransformerQR } from "@/components/TransformerQR";
 import { OPERATIONAL_STATUS_LABELS, type OperationalStatus } from "@/types";
 
 function transformerQuery(id: string) {
@@ -137,8 +138,16 @@ function TransformerProfile() {
         </Card>
       </div>
 
+      <TransformerQR
+        transformerId={t.id}
+        assetId={t.asset_id ?? ""}
+        siteName={t.site_name}
+        kvaRating={t.kva_rating ?? 0}
+        voltageKv={t.network_voltage_kv ?? 0}
+      />
+
       <p className="text-xs text-muted-foreground">
-        Inspections, maintenance history, fault timeline, and QR code land in upcoming phases.
+        Inspections, maintenance history, and fault timeline land in upcoming phases.
       </p>
     </div>
   );
