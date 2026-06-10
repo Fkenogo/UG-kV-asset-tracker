@@ -138,8 +138,16 @@ function TransformerProfile() {
         </Card>
       </div>
 
+      <TransformerQR
+        transformerId={t.id}
+        assetId={t.asset_id ?? ""}
+        siteName={t.site_name}
+        kvaRating={t.kva_rating ?? 0}
+        voltageKv={t.network_voltage_kv ?? 0}
+      />
+
       <p className="text-xs text-muted-foreground">
-        Inspections, maintenance history, fault timeline, and QR code land in upcoming phases.
+        Inspections, maintenance history, and fault timeline land in upcoming phases.
       </p>
     </div>
   );
