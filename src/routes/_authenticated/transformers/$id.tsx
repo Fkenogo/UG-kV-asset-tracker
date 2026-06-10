@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { TransformerQR } from "@/components/TransformerQR";
 import { OPERATIONAL_STATUS_LABELS, type OperationalStatus } from "@/types";
 
 function transformerQuery(id: string) {
