@@ -109,6 +109,32 @@ function TransformerProfile() {
         </div>
       </div>
 
+      {/* Quick actions */}
+      <div className="flex flex-wrap gap-2">
+        {canDo(role, "log_inspection") && (
+          <Button asChild size="sm" variant="outline">
+            <Link to="/inspections/new" search={{ transformerId: t.id }}>
+              <ClipboardCheck className="size-4 mr-1.5" /> Log inspection
+            </Link>
+          </Button>
+        )}
+        {canDo(role, "report_fault") && (
+          <Button asChild size="sm" variant="outline">
+            <Link to="/faults/new" search={{ transformerId: t.id }}>
+              <ShieldAlert className="size-4 mr-1.5" /> Report fault
+            </Link>
+          </Button>
+        )}
+        {canDo(role, "log_maintenance") && (
+          <Button asChild size="sm" variant="outline">
+            <Link to="/maintenance/new" search={{ transformerId: t.id }}>
+              <Wrench className="size-4 mr-1.5" /> Log maintenance
+            </Link>
+          </Button>
+        )}
+      </div>
+
+
       <div className="grid md:grid-cols-2 gap-4">
         <Card>
           <CardHeader><CardTitle className="text-base">Identification</CardTitle></CardHeader>
