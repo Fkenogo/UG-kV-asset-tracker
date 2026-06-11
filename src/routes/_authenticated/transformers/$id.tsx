@@ -193,9 +193,30 @@ function TransformerProfile() {
         voltageKv={t.network_voltage_kv ?? 0}
       />
 
-      <p className="text-xs text-muted-foreground">
-        Inspections, maintenance history, and fault timeline land in upcoming phases.
-      </p>
+      <Card>
+        <CardHeader><CardTitle className="text-base">Activity timeline</CardTitle></CardHeader>
+        <CardContent className="text-sm">
+          {timeline.length === 0 ? (
+            <p className="text-muted-foreground">No activity recorded yet.</p>
+          ) : (
+            <ol className="space-y-3">
+              {timeline.map((evt) => (
+                <li key={evt.id} className="flex gap-3 items-start">
+                  <div className="mt-1 size-2 rounded-full bg-accent shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm">{evt.event_summary}</div>
+                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground mt-0.5">
+                      {evt.event_type.replace(/_/g, " ")} ·{" "}
+                      {new Date(evt.created_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
+        </CardContent>
+      </Card>
+
     </div>
   );
 }
