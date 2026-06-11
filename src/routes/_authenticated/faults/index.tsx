@@ -17,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export const Route = createFileRoute("/_authenticated/faults")({
+export const Route = createFileRoute("/_authenticated/faults/")({
   head: () => ({ meta: [{ title: "Faults — kVAssetTracker" }] }),
   component: FaultsList,
 });
