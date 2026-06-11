@@ -8,7 +8,7 @@ import { canDo } from "@/lib/permissions";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-export const Route = createFileRoute("/_authenticated/inspections")({
+export const Route = createFileRoute("/_authenticated/inspections/")({
   head: () => ({ meta: [{ title: "Inspections — kVAssetTracker" }] }),
   component: InspectionsList,
 });
