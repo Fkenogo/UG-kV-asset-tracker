@@ -14,10 +14,15 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedQrScanRouteImport } from './routes/_authenticated/qr-scan'
 import { Route as AuthenticatedMapRouteImport } from './routes/_authenticated/map'
+import { Route as AuthenticatedInspectionsRouteImport } from './routes/_authenticated/inspections'
+import { Route as AuthenticatedFaultsRouteImport } from './routes/_authenticated/faults'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedTransformersIndexRouteImport } from './routes/_authenticated/transformers/index'
 import { Route as AuthenticatedTransformersNewRouteImport } from './routes/_authenticated/transformers/new'
 import { Route as AuthenticatedTransformersIdRouteImport } from './routes/_authenticated/transformers/$id'
+import { Route as AuthenticatedMaintenanceNewRouteImport } from './routes/_authenticated/maintenance.new'
+import { Route as AuthenticatedInspectionsNewRouteImport } from './routes/_authenticated/inspections.new'
+import { Route as AuthenticatedFaultsNewRouteImport } from './routes/_authenticated/faults.new'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -43,6 +48,17 @@ const AuthenticatedMapRoute = AuthenticatedMapRouteImport.update({
   path: '/map',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedInspectionsRoute =
+  AuthenticatedInspectionsRouteImport.update({
+    id: '/inspections',
+    path: '/inspections',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFaultsRoute = AuthenticatedFaultsRouteImport.update({
+  id: '/faults',
+  path: '/faults',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -66,13 +82,35 @@ const AuthenticatedTransformersIdRoute =
     path: '/transformers/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedMaintenanceNewRoute =
+  AuthenticatedMaintenanceNewRouteImport.update({
+    id: '/maintenance/new',
+    path: '/maintenance/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedInspectionsNewRoute =
+  AuthenticatedInspectionsNewRouteImport.update({
+    id: '/new',
+    path: '/new',
+    getParentRoute: () => AuthenticatedInspectionsRoute,
+  } as any)
+const AuthenticatedFaultsNewRoute = AuthenticatedFaultsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => AuthenticatedFaultsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/faults': typeof AuthenticatedFaultsRouteWithChildren
+  '/inspections': typeof AuthenticatedInspectionsRouteWithChildren
   '/map': typeof AuthenticatedMapRoute
   '/qr-scan': typeof AuthenticatedQrScanRoute
+  '/faults/new': typeof AuthenticatedFaultsNewRoute
+  '/inspections/new': typeof AuthenticatedInspectionsNewRoute
+  '/maintenance/new': typeof AuthenticatedMaintenanceNewRoute
   '/transformers/$id': typeof AuthenticatedTransformersIdRoute
   '/transformers/new': typeof AuthenticatedTransformersNewRoute
   '/transformers/': typeof AuthenticatedTransformersIndexRoute
@@ -81,8 +119,13 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/faults': typeof AuthenticatedFaultsRouteWithChildren
+  '/inspections': typeof AuthenticatedInspectionsRouteWithChildren
   '/map': typeof AuthenticatedMapRoute
   '/qr-scan': typeof AuthenticatedQrScanRoute
+  '/faults/new': typeof AuthenticatedFaultsNewRoute
+  '/inspections/new': typeof AuthenticatedInspectionsNewRoute
+  '/maintenance/new': typeof AuthenticatedMaintenanceNewRoute
   '/transformers/$id': typeof AuthenticatedTransformersIdRoute
   '/transformers/new': typeof AuthenticatedTransformersNewRoute
   '/transformers': typeof AuthenticatedTransformersIndexRoute
@@ -93,8 +136,13 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/faults': typeof AuthenticatedFaultsRouteWithChildren
+  '/_authenticated/inspections': typeof AuthenticatedInspectionsRouteWithChildren
   '/_authenticated/map': typeof AuthenticatedMapRoute
   '/_authenticated/qr-scan': typeof AuthenticatedQrScanRoute
+  '/_authenticated/faults/new': typeof AuthenticatedFaultsNewRoute
+  '/_authenticated/inspections/new': typeof AuthenticatedInspectionsNewRoute
+  '/_authenticated/maintenance/new': typeof AuthenticatedMaintenanceNewRoute
   '/_authenticated/transformers/$id': typeof AuthenticatedTransformersIdRoute
   '/_authenticated/transformers/new': typeof AuthenticatedTransformersNewRoute
   '/_authenticated/transformers/': typeof AuthenticatedTransformersIndexRoute
@@ -105,8 +153,13 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/faults'
+    | '/inspections'
     | '/map'
     | '/qr-scan'
+    | '/faults/new'
+    | '/inspections/new'
+    | '/maintenance/new'
     | '/transformers/$id'
     | '/transformers/new'
     | '/transformers/'
@@ -115,8 +168,13 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/faults'
+    | '/inspections'
     | '/map'
     | '/qr-scan'
+    | '/faults/new'
+    | '/inspections/new'
+    | '/maintenance/new'
     | '/transformers/$id'
     | '/transformers/new'
     | '/transformers'
@@ -126,8 +184,13 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/dashboard'
+    | '/_authenticated/faults'
+    | '/_authenticated/inspections'
     | '/_authenticated/map'
     | '/_authenticated/qr-scan'
+    | '/_authenticated/faults/new'
+    | '/_authenticated/inspections/new'
+    | '/_authenticated/maintenance/new'
     | '/_authenticated/transformers/$id'
     | '/_authenticated/transformers/new'
     | '/_authenticated/transformers/'
@@ -176,6 +239,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMapRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/inspections': {
+      id: '/_authenticated/inspections'
+      path: '/inspections'
+      fullPath: '/inspections'
+      preLoaderRoute: typeof AuthenticatedInspectionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/faults': {
+      id: '/_authenticated/faults'
+      path: '/faults'
+      fullPath: '/faults'
+      preLoaderRoute: typeof AuthenticatedFaultsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -204,13 +281,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTransformersIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/maintenance/new': {
+      id: '/_authenticated/maintenance/new'
+      path: '/maintenance/new'
+      fullPath: '/maintenance/new'
+      preLoaderRoute: typeof AuthenticatedMaintenanceNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/inspections/new': {
+      id: '/_authenticated/inspections/new'
+      path: '/new'
+      fullPath: '/inspections/new'
+      preLoaderRoute: typeof AuthenticatedInspectionsNewRouteImport
+      parentRoute: typeof AuthenticatedInspectionsRoute
+    }
+    '/_authenticated/faults/new': {
+      id: '/_authenticated/faults/new'
+      path: '/new'
+      fullPath: '/faults/new'
+      preLoaderRoute: typeof AuthenticatedFaultsNewRouteImport
+      parentRoute: typeof AuthenticatedFaultsRoute
+    }
   }
 }
 
+interface AuthenticatedFaultsRouteChildren {
+  AuthenticatedFaultsNewRoute: typeof AuthenticatedFaultsNewRoute
+}
+
+const AuthenticatedFaultsRouteChildren: AuthenticatedFaultsRouteChildren = {
+  AuthenticatedFaultsNewRoute: AuthenticatedFaultsNewRoute,
+}
+
+const AuthenticatedFaultsRouteWithChildren =
+  AuthenticatedFaultsRoute._addFileChildren(AuthenticatedFaultsRouteChildren)
+
+interface AuthenticatedInspectionsRouteChildren {
+  AuthenticatedInspectionsNewRoute: typeof AuthenticatedInspectionsNewRoute
+}
+
+const AuthenticatedInspectionsRouteChildren: AuthenticatedInspectionsRouteChildren =
+  {
+    AuthenticatedInspectionsNewRoute: AuthenticatedInspectionsNewRoute,
+  }
+
+const AuthenticatedInspectionsRouteWithChildren =
+  AuthenticatedInspectionsRoute._addFileChildren(
+    AuthenticatedInspectionsRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedFaultsRoute: typeof AuthenticatedFaultsRouteWithChildren
+  AuthenticatedInspectionsRoute: typeof AuthenticatedInspectionsRouteWithChildren
   AuthenticatedMapRoute: typeof AuthenticatedMapRoute
   AuthenticatedQrScanRoute: typeof AuthenticatedQrScanRoute
+  AuthenticatedMaintenanceNewRoute: typeof AuthenticatedMaintenanceNewRoute
   AuthenticatedTransformersIdRoute: typeof AuthenticatedTransformersIdRoute
   AuthenticatedTransformersNewRoute: typeof AuthenticatedTransformersNewRoute
   AuthenticatedTransformersIndexRoute: typeof AuthenticatedTransformersIndexRoute
@@ -218,8 +344,11 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedFaultsRoute: AuthenticatedFaultsRouteWithChildren,
+  AuthenticatedInspectionsRoute: AuthenticatedInspectionsRouteWithChildren,
   AuthenticatedMapRoute: AuthenticatedMapRoute,
   AuthenticatedQrScanRoute: AuthenticatedQrScanRoute,
+  AuthenticatedMaintenanceNewRoute: AuthenticatedMaintenanceNewRoute,
   AuthenticatedTransformersIdRoute: AuthenticatedTransformersIdRoute,
   AuthenticatedTransformersNewRoute: AuthenticatedTransformersNewRoute,
   AuthenticatedTransformersIndexRoute: AuthenticatedTransformersIndexRoute,
@@ -236,13 +365,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
