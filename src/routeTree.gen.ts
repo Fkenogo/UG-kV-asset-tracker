@@ -16,8 +16,13 @@ import { Route as AuthenticatedQrScanRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedMapRouteImport } from './routes/_authenticated/map'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedTransformersIndexRouteImport } from './routes/_authenticated/transformers/index'
+import { Route as AuthenticatedInspectionsIndexRouteImport } from './routes/_authenticated/inspections/index'
+import { Route as AuthenticatedFaultsIndexRouteImport } from './routes/_authenticated/faults/index'
 import { Route as AuthenticatedTransformersNewRouteImport } from './routes/_authenticated/transformers/new'
 import { Route as AuthenticatedTransformersIdRouteImport } from './routes/_authenticated/transformers/$id'
+import { Route as AuthenticatedMaintenanceNewRouteImport } from './routes/_authenticated/maintenance/new'
+import { Route as AuthenticatedInspectionsNewRouteImport } from './routes/_authenticated/inspections/new'
+import { Route as AuthenticatedFaultsNewRouteImport } from './routes/_authenticated/faults/new'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -54,6 +59,18 @@ const AuthenticatedTransformersIndexRoute =
     path: '/transformers/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedInspectionsIndexRoute =
+  AuthenticatedInspectionsIndexRouteImport.update({
+    id: '/inspections/',
+    path: '/inspections/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFaultsIndexRoute =
+  AuthenticatedFaultsIndexRouteImport.update({
+    id: '/faults/',
+    path: '/faults/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedTransformersNewRoute =
   AuthenticatedTransformersNewRouteImport.update({
     id: '/transformers/new',
@@ -66,6 +83,23 @@ const AuthenticatedTransformersIdRoute =
     path: '/transformers/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedMaintenanceNewRoute =
+  AuthenticatedMaintenanceNewRouteImport.update({
+    id: '/maintenance/new',
+    path: '/maintenance/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedInspectionsNewRoute =
+  AuthenticatedInspectionsNewRouteImport.update({
+    id: '/inspections/new',
+    path: '/inspections/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFaultsNewRoute = AuthenticatedFaultsNewRouteImport.update({
+  id: '/faults/new',
+  path: '/faults/new',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -73,8 +107,13 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/map': typeof AuthenticatedMapRoute
   '/qr-scan': typeof AuthenticatedQrScanRoute
+  '/faults/new': typeof AuthenticatedFaultsNewRoute
+  '/inspections/new': typeof AuthenticatedInspectionsNewRoute
+  '/maintenance/new': typeof AuthenticatedMaintenanceNewRoute
   '/transformers/$id': typeof AuthenticatedTransformersIdRoute
   '/transformers/new': typeof AuthenticatedTransformersNewRoute
+  '/faults/': typeof AuthenticatedFaultsIndexRoute
+  '/inspections/': typeof AuthenticatedInspectionsIndexRoute
   '/transformers/': typeof AuthenticatedTransformersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -83,8 +122,13 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/map': typeof AuthenticatedMapRoute
   '/qr-scan': typeof AuthenticatedQrScanRoute
+  '/faults/new': typeof AuthenticatedFaultsNewRoute
+  '/inspections/new': typeof AuthenticatedInspectionsNewRoute
+  '/maintenance/new': typeof AuthenticatedMaintenanceNewRoute
   '/transformers/$id': typeof AuthenticatedTransformersIdRoute
   '/transformers/new': typeof AuthenticatedTransformersNewRoute
+  '/faults': typeof AuthenticatedFaultsIndexRoute
+  '/inspections': typeof AuthenticatedInspectionsIndexRoute
   '/transformers': typeof AuthenticatedTransformersIndexRoute
 }
 export interface FileRoutesById {
@@ -95,8 +139,13 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/map': typeof AuthenticatedMapRoute
   '/_authenticated/qr-scan': typeof AuthenticatedQrScanRoute
+  '/_authenticated/faults/new': typeof AuthenticatedFaultsNewRoute
+  '/_authenticated/inspections/new': typeof AuthenticatedInspectionsNewRoute
+  '/_authenticated/maintenance/new': typeof AuthenticatedMaintenanceNewRoute
   '/_authenticated/transformers/$id': typeof AuthenticatedTransformersIdRoute
   '/_authenticated/transformers/new': typeof AuthenticatedTransformersNewRoute
+  '/_authenticated/faults/': typeof AuthenticatedFaultsIndexRoute
+  '/_authenticated/inspections/': typeof AuthenticatedInspectionsIndexRoute
   '/_authenticated/transformers/': typeof AuthenticatedTransformersIndexRoute
 }
 export interface FileRouteTypes {
@@ -107,8 +156,13 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/map'
     | '/qr-scan'
+    | '/faults/new'
+    | '/inspections/new'
+    | '/maintenance/new'
     | '/transformers/$id'
     | '/transformers/new'
+    | '/faults/'
+    | '/inspections/'
     | '/transformers/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -117,8 +171,13 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/map'
     | '/qr-scan'
+    | '/faults/new'
+    | '/inspections/new'
+    | '/maintenance/new'
     | '/transformers/$id'
     | '/transformers/new'
+    | '/faults'
+    | '/inspections'
     | '/transformers'
   id:
     | '__root__'
@@ -128,8 +187,13 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/map'
     | '/_authenticated/qr-scan'
+    | '/_authenticated/faults/new'
+    | '/_authenticated/inspections/new'
+    | '/_authenticated/maintenance/new'
     | '/_authenticated/transformers/$id'
     | '/_authenticated/transformers/new'
+    | '/_authenticated/faults/'
+    | '/_authenticated/inspections/'
     | '/_authenticated/transformers/'
   fileRoutesById: FileRoutesById
 }
@@ -190,6 +254,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTransformersIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/inspections/': {
+      id: '/_authenticated/inspections/'
+      path: '/inspections'
+      fullPath: '/inspections/'
+      preLoaderRoute: typeof AuthenticatedInspectionsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/faults/': {
+      id: '/_authenticated/faults/'
+      path: '/faults'
+      fullPath: '/faults/'
+      preLoaderRoute: typeof AuthenticatedFaultsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/transformers/new': {
       id: '/_authenticated/transformers/new'
       path: '/transformers/new'
@@ -204,6 +282,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTransformersIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/maintenance/new': {
+      id: '/_authenticated/maintenance/new'
+      path: '/maintenance/new'
+      fullPath: '/maintenance/new'
+      preLoaderRoute: typeof AuthenticatedMaintenanceNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/inspections/new': {
+      id: '/_authenticated/inspections/new'
+      path: '/inspections/new'
+      fullPath: '/inspections/new'
+      preLoaderRoute: typeof AuthenticatedInspectionsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/faults/new': {
+      id: '/_authenticated/faults/new'
+      path: '/faults/new'
+      fullPath: '/faults/new'
+      preLoaderRoute: typeof AuthenticatedFaultsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -211,8 +310,13 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedMapRoute: typeof AuthenticatedMapRoute
   AuthenticatedQrScanRoute: typeof AuthenticatedQrScanRoute
+  AuthenticatedFaultsNewRoute: typeof AuthenticatedFaultsNewRoute
+  AuthenticatedInspectionsNewRoute: typeof AuthenticatedInspectionsNewRoute
+  AuthenticatedMaintenanceNewRoute: typeof AuthenticatedMaintenanceNewRoute
   AuthenticatedTransformersIdRoute: typeof AuthenticatedTransformersIdRoute
   AuthenticatedTransformersNewRoute: typeof AuthenticatedTransformersNewRoute
+  AuthenticatedFaultsIndexRoute: typeof AuthenticatedFaultsIndexRoute
+  AuthenticatedInspectionsIndexRoute: typeof AuthenticatedInspectionsIndexRoute
   AuthenticatedTransformersIndexRoute: typeof AuthenticatedTransformersIndexRoute
 }
 
@@ -220,8 +324,13 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedMapRoute: AuthenticatedMapRoute,
   AuthenticatedQrScanRoute: AuthenticatedQrScanRoute,
+  AuthenticatedFaultsNewRoute: AuthenticatedFaultsNewRoute,
+  AuthenticatedInspectionsNewRoute: AuthenticatedInspectionsNewRoute,
+  AuthenticatedMaintenanceNewRoute: AuthenticatedMaintenanceNewRoute,
   AuthenticatedTransformersIdRoute: AuthenticatedTransformersIdRoute,
   AuthenticatedTransformersNewRoute: AuthenticatedTransformersNewRoute,
+  AuthenticatedFaultsIndexRoute: AuthenticatedFaultsIndexRoute,
+  AuthenticatedInspectionsIndexRoute: AuthenticatedInspectionsIndexRoute,
   AuthenticatedTransformersIndexRoute: AuthenticatedTransformersIndexRoute,
 }
 
@@ -236,3 +345,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

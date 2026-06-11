@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
-import { ArrowLeft, AlertTriangle, MapPin } from "lucide-react";
+import { useSuspenseQuery, useQuery, queryOptions } from "@tanstack/react-query";
+import { ArrowLeft, AlertTriangle, ClipboardCheck, MapPin, ShieldAlert, Wrench } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { canDo } from "@/lib/permissions";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -46,9 +48,27 @@ export const Route = createFileRoute("/_authenticated/transformers/$id")({
   notFoundComponent: () => <div className="p-8">Transformer not found.</div>,
 });
 
+function timelineQuery(id: string) {
+  return queryOptions({
+    queryKey: ["transformer-timeline", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("asset_timeline")
+        .select("id, event_type, event_summary, created_at")
+        .eq("transformer_id", id)
+        .order("created_at", { ascending: false })
+        .limit(20);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+}
+
 function TransformerProfile() {
   const { id } = Route.useParams();
+  const { role } = useAuth();
   const { data: t } = useSuspenseQuery(transformerQuery(id));
+  const { data: timeline = [] } = useQuery(timelineQuery(id));
   const status = (t.operational_status ?? "unverified") as OperationalStatus;
 
   return (
@@ -60,6 +80,7 @@ function TransformerProfile() {
           </Link>
         </Button>
       </div>
+
 
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
@@ -87,6 +108,32 @@ function TransformerProfile() {
           </div>
         </div>
       </div>
+
+      {/* Quick actions */}
+      <div className="flex flex-wrap gap-2">
+        {canDo(role, "log_inspection") && (
+          <Button asChild size="sm" variant="outline">
+            <Link to="/inspections/new" search={{ transformerId: t.id }}>
+              <ClipboardCheck className="size-4 mr-1.5" /> Log inspection
+            </Link>
+          </Button>
+        )}
+        {canDo(role, "report_fault") && (
+          <Button asChild size="sm" variant="outline">
+            <Link to="/faults/new" search={{ transformerId: t.id }}>
+              <ShieldAlert className="size-4 mr-1.5" /> Report fault
+            </Link>
+          </Button>
+        )}
+        {canDo(role, "log_maintenance") && (
+          <Button asChild size="sm" variant="outline">
+            <Link to="/maintenance/new" search={{ transformerId: t.id }}>
+              <Wrench className="size-4 mr-1.5" /> Log maintenance
+            </Link>
+          </Button>
+        )}
+      </div>
+
 
       <div className="grid md:grid-cols-2 gap-4">
         <Card>
@@ -146,9 +193,30 @@ function TransformerProfile() {
         voltageKv={t.network_voltage_kv ?? 0}
       />
 
-      <p className="text-xs text-muted-foreground">
-        Inspections, maintenance history, and fault timeline land in upcoming phases.
-      </p>
+      <Card>
+        <CardHeader><CardTitle className="text-base">Activity timeline</CardTitle></CardHeader>
+        <CardContent className="text-sm">
+          {timeline.length === 0 ? (
+            <p className="text-muted-foreground">No activity recorded yet.</p>
+          ) : (
+            <ol className="space-y-3">
+              {timeline.map((evt) => (
+                <li key={evt.id} className="flex gap-3 items-start">
+                  <div className="mt-1 size-2 rounded-full bg-accent shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm">{evt.event_summary}</div>
+                    <div className="text-[11px] uppercase tracking-wider text-muted-foreground mt-0.5">
+                      {evt.event_type.replace(/_/g, " ")} ·{" "}
+                      {new Date(evt.created_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
+        </CardContent>
+      </Card>
+
     </div>
   );
 }
