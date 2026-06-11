@@ -150,7 +150,7 @@ function NewInspection() {
         event_summary: overload
           ? `Inspection logged — overload ${loadPercentage}%`
           : `Inspection logged${loadPercentage != null ? ` — load ${loadPercentage}%` : ""}`,
-        related_record_id: inserted.id,
+        linked_record_id: inserted.id,
         created_by: user.id,
       });
 

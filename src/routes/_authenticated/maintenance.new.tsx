@@ -106,7 +106,7 @@ function NewMaintenance() {
         transformer_id: transformerId,
         event_type: "maintenance",
         event_summary: `${maintenanceType} maintenance completed`,
-        related_record_id: inserted.id,
+        linked_record_id: inserted.id,
         created_by: user.id,
       });
 

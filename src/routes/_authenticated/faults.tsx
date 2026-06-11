@@ -86,7 +86,7 @@ function FaultsList() {
           transformer_id: t.id,
           event_type: "fault_resolved",
           event_summary: `Fault resolved${downtime ? ` (${downtime}h downtime)` : ""}`,
-          related_record_id: resolvingId,
+          linked_record_id: resolvingId,
           created_by: user.id,
         });
       }

@@ -92,7 +92,7 @@ function NewFault() {
       if (error) throw error;
 
       // Flag transformer with open fault + mark faulty for critical/complete_outage
-      const update: Record<string, unknown> = { has_open_fault: true };
+      const update: { has_open_fault: boolean; operational_status?: "faulty" } = { has_open_fault: true };
       if (severity === "critical" || severity === "complete_outage") {
         update.operational_status = "faulty";
       }
@@ -102,7 +102,7 @@ function NewFault() {
         transformer_id: transformerId,
         event_type: "fault_reported",
         event_summary: `${severity.replace(/_/g, " ")} fault reported${faultType ? ` (${faultType})` : ""}`,
-        related_record_id: inserted.id,
+        linked_record_id: inserted.id,
         created_by: user.id,
       });
 
