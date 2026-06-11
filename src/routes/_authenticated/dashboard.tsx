@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, queryOptions } from "@tanstack/react-query";
 import {
   AlertTriangle,
@@ -201,11 +201,11 @@ function ActionCard({
     );
   }
   return (
-    <Link
-      to={to}
+    <a
+      href={to}
       className="block rounded-xl border bg-card p-4 hover:border-accent hover:shadow-sm transition"
     >
       {content}
-    </Link>
+    </a>
   );
 }
