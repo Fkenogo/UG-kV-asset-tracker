@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
-import { ArrowLeft, AlertTriangle, MapPin } from "lucide-react";
+import { useSuspenseQuery, useQuery, queryOptions } from "@tanstack/react-query";
+import { ArrowLeft, AlertTriangle, ClipboardCheck, MapPin, ShieldAlert, Wrench } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { canDo } from "@/lib/permissions";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
