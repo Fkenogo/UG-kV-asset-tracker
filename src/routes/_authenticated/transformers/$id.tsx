@@ -48,9 +48,27 @@ export const Route = createFileRoute("/_authenticated/transformers/$id")({
   notFoundComponent: () => <div className="p-8">Transformer not found.</div>,
 });
 
+function timelineQuery(id: string) {
+  return queryOptions({
+    queryKey: ["transformer-timeline", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("asset_timeline")
+        .select("id, event_type, event_summary, created_at")
+        .eq("transformer_id", id)
+        .order("created_at", { ascending: false })
+        .limit(20);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+}
+
 function TransformerProfile() {
   const { id } = Route.useParams();
+  const { role } = useAuth();
   const { data: t } = useSuspenseQuery(transformerQuery(id));
+  const { data: timeline = [] } = useQuery(timelineQuery(id));
   const status = (t.operational_status ?? "unverified") as OperationalStatus;
 
   return (
@@ -62,6 +80,7 @@ function TransformerProfile() {
           </Link>
         </Button>
       </div>
+
 
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
