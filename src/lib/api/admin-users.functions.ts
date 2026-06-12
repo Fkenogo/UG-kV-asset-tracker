@@ -93,7 +93,12 @@ export const updateAdminUser = createServerFn({ method: "POST" })
   .handler(async ({ context, data }) => {
     await assertSuperAdmin(context.supabase, context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const updates: Record<string, unknown> = {};
+    const updates: {
+      full_name?: string;
+      territory_id?: string | null;
+      service_area_id?: string | null;
+      is_active?: boolean;
+    } = {};
     if (data.full_name !== undefined) updates.full_name = data.full_name;
     if (data.territory_id !== undefined) updates.territory_id = data.territory_id;
     if (data.service_area_id !== undefined) updates.service_area_id = data.service_area_id;
