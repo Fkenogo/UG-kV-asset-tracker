@@ -194,6 +194,8 @@ function TransformerProfile() {
         voltageKv={t.network_voltage_kv ?? 0}
       />
 
+      <TransformerPhotos transformerId={t.id} />
+
       <Card>
         <CardHeader><CardTitle className="text-base">Activity timeline</CardTitle></CardHeader>
         <CardContent className="text-sm">
