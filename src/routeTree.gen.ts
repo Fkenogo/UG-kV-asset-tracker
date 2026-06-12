@@ -23,6 +23,7 @@ import { Route as AuthenticatedTransformersIdRouteImport } from './routes/_authe
 import { Route as AuthenticatedMaintenanceNewRouteImport } from './routes/_authenticated/maintenance/new'
 import { Route as AuthenticatedInspectionsNewRouteImport } from './routes/_authenticated/inspections/new'
 import { Route as AuthenticatedFaultsNewRouteImport } from './routes/_authenticated/faults/new'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin/users'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -100,6 +101,11 @@ const AuthenticatedFaultsNewRoute = AuthenticatedFaultsNewRouteImport.update({
   path: '/faults/new',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/map': typeof AuthenticatedMapRoute
   '/qr-scan': typeof AuthenticatedQrScanRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/faults/new': typeof AuthenticatedFaultsNewRoute
   '/inspections/new': typeof AuthenticatedInspectionsNewRoute
   '/maintenance/new': typeof AuthenticatedMaintenanceNewRoute
@@ -122,6 +129,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/map': typeof AuthenticatedMapRoute
   '/qr-scan': typeof AuthenticatedQrScanRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/faults/new': typeof AuthenticatedFaultsNewRoute
   '/inspections/new': typeof AuthenticatedInspectionsNewRoute
   '/maintenance/new': typeof AuthenticatedMaintenanceNewRoute
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/map': typeof AuthenticatedMapRoute
   '/_authenticated/qr-scan': typeof AuthenticatedQrScanRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/faults/new': typeof AuthenticatedFaultsNewRoute
   '/_authenticated/inspections/new': typeof AuthenticatedInspectionsNewRoute
   '/_authenticated/maintenance/new': typeof AuthenticatedMaintenanceNewRoute
@@ -156,6 +165,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/map'
     | '/qr-scan'
+    | '/admin/users'
     | '/faults/new'
     | '/inspections/new'
     | '/maintenance/new'
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/map'
     | '/qr-scan'
+    | '/admin/users'
     | '/faults/new'
     | '/inspections/new'
     | '/maintenance/new'
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/map'
     | '/_authenticated/qr-scan'
+    | '/_authenticated/admin/users'
     | '/_authenticated/faults/new'
     | '/_authenticated/inspections/new'
     | '/_authenticated/maintenance/new'
@@ -303,6 +315,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFaultsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -310,6 +329,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedMapRoute: typeof AuthenticatedMapRoute
   AuthenticatedQrScanRoute: typeof AuthenticatedQrScanRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedFaultsNewRoute: typeof AuthenticatedFaultsNewRoute
   AuthenticatedInspectionsNewRoute: typeof AuthenticatedInspectionsNewRoute
   AuthenticatedMaintenanceNewRoute: typeof AuthenticatedMaintenanceNewRoute
@@ -324,6 +344,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedMapRoute: AuthenticatedMapRoute,
   AuthenticatedQrScanRoute: AuthenticatedQrScanRoute,
+  AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
   AuthenticatedFaultsNewRoute: AuthenticatedFaultsNewRoute,
   AuthenticatedInspectionsNewRoute: AuthenticatedInspectionsNewRoute,
   AuthenticatedMaintenanceNewRoute: AuthenticatedMaintenanceNewRoute,
