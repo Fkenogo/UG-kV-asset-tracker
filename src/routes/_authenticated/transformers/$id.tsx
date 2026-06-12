@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TransformerQR } from "@/components/TransformerQR";
+import { TransformerPhotos } from "@/components/TransformerPhotos";
 import { OPERATIONAL_STATUS_LABELS, type OperationalStatus } from "@/types";
 
 function transformerQuery(id: string) {
@@ -192,6 +193,8 @@ function TransformerProfile() {
         kvaRating={t.kva_rating ?? 0}
         voltageKv={t.network_voltage_kv ?? 0}
       />
+
+      <TransformerPhotos transformerId={t.id} />
 
       <Card>
         <CardHeader><CardTitle className="text-base">Activity timeline</CardTitle></CardHeader>
