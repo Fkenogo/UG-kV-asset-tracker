@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "sdk_version": "0.24.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://rvnbfpwolaoerkdbmgti.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "kvassettracker-mcp",
+      "version": "0.1.0",
+      "title": "kVAssetTracker MCP"
+    },
+    "tools": [
+      {
+        "name": "list_transformers",
+        "title": "List transformers",
+        "description": "List transformers in the kVAssetTracker registry, optionally filtered by search term, voltage, or open-fault status. Returns up to 50 rows scoped to the signed-in user's role and territory.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "search": {
+              "description": "Optional text to match against asset_id, serial_number, or site_name.",
+              "type": "string"
+            },
+            "voltage": {
+              "description": "Optional network voltage filter: 11 or 33 (kV).",
+              "type": "number"
+            },
+            "only_open_faults": {
+              "description": "If true, only return transformers currently flagged with an open fault.",
+              "type": "boolean"
+            },
+            "limit": {
+              "description": "Max rows to return (default 25).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_transformer",
+        "title": "Get transformer",
+        "description": "Fetch the full profile of a single transformer by its asset_id (e.g. TRF-000123) or database id (uuid).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "identifier": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Transformer asset_id (TRF-######) or uuid."
+            }
+          },
+          "required": [
+            "identifier"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_open_faults",
+        "title": "List open faults",
+        "description": "List open transformer fault reports (status open, assigned, or in_progress), optionally filtered by severity. Returns up to 50 rows visible to the signed-in user.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "severity": {
+              "description": "Optional fault severity filter.",
+              "type": "string",
+              "enum": [
+                "minor",
+                "major",
+                "critical",
+                "complete_outage"
+              ]
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "my_profile",
+        "title": "My profile",
+        "description": "Return the signed-in kVAssetTracker user's profile and roles. Useful to confirm which UEDCL account the MCP client is connected as.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
